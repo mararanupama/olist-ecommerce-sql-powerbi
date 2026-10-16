@@ -1,0 +1,49 @@
+USE olist_bi;
+
+-- Run the MySQL client with --local-infile=1. Paths use forward slashes for MySQL.
+SET SESSION sql_mode = '';
+
+LOAD DATA LOCAL INFILE 'data/raw/olist_customers_dataset.csv'
+INTO TABLE raw_customers CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/raw/olist_geolocation_dataset.csv'
+INTO TABLE raw_geolocation CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/raw/olist_order_items_dataset.csv'
+INTO TABLE raw_order_items CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/raw/olist_order_payments_dataset.csv'
+INTO TABLE raw_order_payments CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/staged/olist_order_reviews_clean.csv'
+INTO TABLE raw_order_reviews CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/raw/olist_orders_dataset.csv'
+INTO TABLE raw_orders CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/raw/olist_products_dataset.csv'
+INTO TABLE raw_products CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/raw/olist_sellers_dataset.csv'
+INTO TABLE raw_sellers CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/raw/product_category_name_translation.csv'
+INTO TABLE raw_category_translation CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES;

@@ -1,0 +1,121 @@
+table 'KPI Measures'
+	lineageTag: 52128a63-932b-4ee0-baf0-dab7b44cb877
+
+	measure 'Total Orders' = DISTINCTCOUNT('olist_bi vw_fact_orders'[order_id])
+		formatString: #,##0
+		lineageTag: e82236e6-2548-4350-a0d7-390cae094711
+
+	measure 'Delivered Orders' = SUM('olist_bi vw_fact_orders'[delivered_flag])
+		formatString: #,##0
+		lineageTag: a4a433ef-450a-4b79-b5b2-29e4769605aa
+
+	measure 'Order Revenue' = SUM('olist_bi vw_fact_orders'[item_revenue])
+		formatString: \R\$ #,##0.00
+		lineageTag: e350a0a7-c195-4944-b911-6bf6575b1e83
+
+	measure 'Delivered Revenue' = CALCULATE([Order Revenue], KEEPFILTERS('olist_bi vw_fact_orders'[order_status] = "delivered"))
+		formatString: \R\$ #,##0.00
+		lineageTag: 26544d22-ebf2-41d5-b2a0-2b97f78072eb
+
+	measure 'Average Order Value' = DIVIDE([Delivered Revenue], [Delivered Orders])
+		formatString: \R\$ #,##0.00
+		lineageTag: fa83be6c-ef39-4dcc-8d6c-6f3610f6111c
+
+	measure 'Freight Cost' = SUM('olist_bi vw_fact_orders'[freight_value])
+		formatString: \R\$ #,##0.00
+		lineageTag: c2d399a4-08ad-400f-8dc9-21c1d15d6102
+
+	measure 'Average Freight per Order' = DIVIDE(CALCULATE(SUM('olist_bi vw_fact_order_items'[freight_value]), KEEPFILTERS('olist_bi vw_fact_order_items'[delivered_flag] = 1)), [Product Orders])
+		formatString: \R\$ #,##0.00
+		lineageTag: 8007c82d-dac8-41e0-8ce9-ec3c89c7186e
+
+	measure 'Average Review Score' = AVERAGE('olist_bi vw_fact_orders'[review_score])
+		formatString: 0.00
+		lineageTag: 3833294e-9988-4fd9-b528-aec0b1fb11aa
+
+	measure 'Average Delivery Days' = CALCULATE(AVERAGE('olist_bi vw_fact_orders'[delivery_days]), KEEPFILTERS('olist_bi vw_fact_orders'[delivered_flag] = 1))
+		formatString: 0.0
+		lineageTag: c04e680d-92d7-4842-91d5-fe3082e84851
+
+	measure 'Late Deliveries' = SUM('olist_bi vw_fact_orders'[late_delivery_flag])
+		formatString: #,##0
+		lineageTag: 08cb82ae-0531-4c41-a8c4-2ba77191b985
+
+	measure 'Late Delivery Rate' = DIVIDE([Late Deliveries], [Delivered Orders])
+		formatString: 0.00%
+		lineageTag: e9ea4422-30b7-4ff9-ae5b-d1698611e77e
+
+	measure 'Low Review Orders' = CALCULATE([Total Orders], KEEPFILTERS(NOT ISBLANK('olist_bi vw_fact_orders'[review_score])), KEEPFILTERS('olist_bi vw_fact_orders'[review_score] <= 2))
+		formatString: #,##0
+		lineageTag: 6f20b7fd-4163-41ed-80a5-30797ce2b94d
+
+	measure 'Low Review Rate' = DIVIDE([Low Review Orders], CALCULATE([Total Orders], NOT ISBLANK('olist_bi vw_fact_orders'[review_score])))
+		formatString: 0.00%
+		lineageTag: 8fcefc01-a0fa-4678-a8d2-639700f51a0d
+
+	measure 'Repeat Customer Rate' = AVERAGE('olist_bi vw_customer_summary'[repeat_customer_flag])
+		formatString: 0.00%
+		lineageTag: 94bffc15-a2b8-4ab6-be30-63966a5eefcb
+
+	measure 'Delivered Item Revenue' = CALCULATE(SUM('olist_bi vw_fact_order_items'[item_revenue]), KEEPFILTERS('olist_bi vw_fact_order_items'[delivered_flag] = 1))
+		formatString: \R\$ #,##0.00
+		lineageTag: 5d3c7ee2-a280-4025-95b4-1be1f1b13843
+
+	measure 'Product Orders' = CALCULATE(DISTINCTCOUNT('olist_bi vw_fact_order_items'[order_id]), 'olist_bi vw_fact_order_items'[delivered_flag] = 1)
+		formatString: #,##0
+		lineageTag: e33276da-435f-4618-88a6-b2d35460c02e
+
+	measure 'Distinct Sellers' = CALCULATE(DISTINCTCOUNT('olist_bi vw_fact_order_items'[seller_id]), KEEPFILTERS('olist_bi vw_fact_order_items'[delivered_flag] = 1))
+		formatString: #,##0
+		lineageTag: 01dc6313-2a25-4c48-a467-146fff0795be
+
+	measure 'Delivered Customers' = CALCULATE(DISTINCTCOUNT('olist_bi vw_fact_orders'[customer_unique_id]), KEEPFILTERS('olist_bi vw_fact_orders'[delivered_flag] = 1))
+		formatString: #,##0
+		lineageTag: f76609ab-0146-4260-89e4-42988c33e83e
+
+	measure 'States Served' = CALCULATE(DISTINCTCOUNT('olist_bi vw_fact_orders'[customer_state]), KEEPFILTERS('olist_bi vw_fact_orders'[delivered_flag] = 1))
+		formatString: #,##0
+		lineageTag: f083e1c3-df25-47e9-a86e-31184346a764
+
+	measure 'Delivered Freight' = CALCULATE(SUM('olist_bi vw_fact_order_items'[freight_value]), KEEPFILTERS('olist_bi vw_fact_order_items'[delivered_flag] = 1))
+		formatString: \R\$ #,##0
+		lineageTag: 7112bdbb-f341-4317-8fdf-bbf286b34844
+
+	measure 'Freight to Revenue' = DIVIDE([Delivered Freight], [Delivered Item Revenue])
+		formatString: 0.0%
+		lineageTag: 48247e6c-bf11-478d-af08-1758f51fc39f
+
+	measure 'Revenue per Seller' = DIVIDE([Delivered Item Revenue], [Distinct Sellers])
+		formatString: \R\$ #,##0
+		lineageTag: febe9c79-6bcf-440b-b763-a9a263305e3a
+
+	measure 'Top Category Revenue' = IF(RANKX(ALLSELECTED('olist_bi dim_product'[Category]), [Delivered Item Revenue], , DESC, DENSE) <= 10, [Delivered Item Revenue])
+		formatString: \R\$ #,##0
+		lineageTag: 7ab410f9-4b9d-4a8e-8828-f93533df16e5
+
+	measure 'Top Seller Revenue' = IF(RANKX(ALLSELECTED('olist_bi dim_seller'[Seller Label]), [Delivered Item Revenue], , DESC, DENSE) <= 10, [Delivered Item Revenue])
+		formatString: \R\$ #,##0
+		lineageTag: 66aa7ed6-62f1-4d47-b513-6e0a78aee981
+
+	measure 'Observed Deliveries' = CALCULATE([Delivered Orders], KEEPFILTERS(NOT ISBLANK('olist_bi vw_fact_orders'[delivered_timestamp])), KEEPFILTERS(NOT ISBLANK('olist_bi vw_fact_orders'[estimated_delivery_date])))
+		formatString: #,##0
+		lineageTag: b89f523a-d371-44b3-bb95-09b630bdffc7
+
+	measure 'Observed Late Rate' = DIVIDE([Late Deliveries], [Observed Deliveries])
+		formatString: 0.0%
+		lineageTag: 00cfdf3d-bde6-4201-8a4f-daf47f1a71c4
+
+	measure 'On Time Rate' = IF([Observed Deliveries] > 0, 1 - [Observed Late Rate])
+		formatString: 0.0%
+		lineageTag: d51cf5d6-6d8c-4a28-9197-7d4bea6eef56
+
+	column 'Measure Holder'
+		dataType: string
+		isHidden
+		lineageTag: 032375a0-e288-4adb-a71d-ed1e6b70b05e
+		summarizeBy: none
+		sourceColumn: [Measure Holder]
+
+	partition 'KPI Measures' = calculated
+		mode: import
+		source = ROW("Measure Holder", BLANK())

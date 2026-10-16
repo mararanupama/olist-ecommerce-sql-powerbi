@@ -1,0 +1,35 @@
+{
+  "source": "Public Olist Power BI report supplied by the portfolio owner",
+  "verified_on": "2026-10-16",
+  "dataset_period": "2016-2018",
+  "filters": "All years, all customer/seller regions and states; no visual selection",
+  "currency": "BRL",
+  "market_geography": {
+    "delivered_orders": 96478,
+    "delivered_revenue": 13221498.11,
+    "customer_revenue_southeast": 8648409.57,
+    "customer_revenue_south": 1901973.11,
+    "customer_revenue_northeast": 1497083.78,
+    "customer_revenue_central_west": 846956.70,
+    "customer_revenue_north": 327074.95
+  },
+  "seller_network": {
+    "active_sellers": 2970,
+    "delivered_revenue": 13221498.11,
+    "top_ten_seller_revenues": [226987.93,217940.44,196882.12,190917.14,186570.05,165981.49,159816.87,139658.69,138208.56,131836.71]
+  },
+  "delivery_experience": {
+    "late_delivery_percent_displayed": 6.8,
+    "on_time_percent_displayed": 93.2,
+    "northeast_late_percent_displayed": 12.7,
+    "southeast_late_percent_displayed": 6.1,
+    "average_review_on_time": 4.290589164786512,
+    "average_review_late": 2.2718225983388183
+  },
+  "calculations": {
+    "southeast_customer_revenue_share_percent": 65.41172186424795,
+    "top_ten_seller_revenue_sum": 1754800.00,
+    "top_ten_seller_revenue_share_percent": 13.272323494663345
+  },
+  "validation": "Customer-region revenues sum to R$13,221,498.11, matching the seller revenue total. Top-ten share sums the ten displayed seller revenues and divides by that total. Review averages are read directly from the Delivery Experience chart. Percentages displayed with one decimal are not unrounded source values. No database refresh or new SQL execution is claimed."
+}
